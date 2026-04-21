@@ -143,10 +143,10 @@ const Home = () => {
         <title>Syachrul — Frontend Web Developer</title>
         <meta name="description" content="Website resmi Syachrul, Front-End Web Developer. Saya berfokus pada penciptaan pengalaman digital yang menarik dan selalu berupaya memberikan solusi terbaik dalam setiap proyek yang saya kerjakan." />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://ekizr.com" />
+        <link rel="canonical" href="https://rullxd.com" />
         <meta property="og:title" content="Syachrul — Frontend Web Developer" />
         <meta property="og:description" content="Website resmi dan portofolio Syachrul, Front-End Web Developer." />
-        <meta property="og:url" content="https://ekizr.com" />
+        <meta property="og:url" content="https://rullxd.com" />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{`
           {
@@ -154,7 +154,7 @@ const Home = () => {
             "@type": "Person",
             "name": "Syachrul",
             "jobTitle": "Frontend Developer",
-            "url": "https://ekizr.com",
+            "url": "https://rullxd.com",
             "sameAs": [
               "https://github.com/syachrul",
               "https://www.linkedin.com/in/syachrul-ramadani-994b462b6/",
