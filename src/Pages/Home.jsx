@@ -93,16 +93,27 @@ const Home = () => {
   const [isHovering, setIsHovering] = useState(false)
 
   useEffect(() => {
-    const initAOS = () => {
-      AOS.init({
-        once: true,
-        offset: 10,
-      });
+    AOS.init({
+      once: true,
+      offset: 30,
+      duration: 700,
+      easing: 'ease-out-cubic',
+    });
+
+    const refreshTimer = setTimeout(() => {
+      AOS.refreshHard();
+    }, 120);
+
+    const handleResize = () => {
+      AOS.refresh();
     };
 
-    initAOS();
-    window.addEventListener('resize', initAOS);
-    return () => window.removeEventListener('resize', initAOS);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      clearTimeout(refreshTimer);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   useEffect(() => {
