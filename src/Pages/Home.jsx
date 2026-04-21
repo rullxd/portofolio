@@ -93,16 +93,20 @@ const Home = () => {
   const [isHovering, setIsHovering] = useState(false)
 
   useEffect(() => {
-    AOS.init({
-      once: true,
-      offset: 30,
-      duration: 700,
-      easing: 'ease-out-cubic',
-    });
+    // Delay init so first-paint hidden state is committed before AOS toggles classes.
+    const initTimer = setTimeout(() => {
+      AOS.init({
+        once: true,
+        offset: 30,
+        duration: 700,
+        easing: 'ease-out-cubic',
+      });
+      AOS.refreshHard();
+    }, 80);
 
     const refreshTimer = setTimeout(() => {
-      AOS.refreshHard();
-    }, 120);
+      AOS.refresh();
+    }, 260);
 
     const handleResize = () => {
       AOS.refresh();
@@ -111,6 +115,7 @@ const Home = () => {
     window.addEventListener('resize', handleResize);
 
     return () => {
+      clearTimeout(initTimer);
       clearTimeout(refreshTimer);
       window.removeEventListener('resize', handleResize);
     };
