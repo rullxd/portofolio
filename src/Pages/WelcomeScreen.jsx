@@ -6,6 +6,7 @@ import 'aos/dist/aos.css';
 
 const TypewriterEffect = ({ text }) => {
   const [displayText, setDisplayText] = useState('');
+  const [isMobile] = useState(() => window.innerWidth < 768);
 
   useEffect(() => {
     let index = 0;
@@ -16,10 +17,12 @@ const TypewriterEffect = ({ text }) => {
       } else {
         clearInterval(timer);
       }
-    }, 260);
+    }, isMobile ? 140 : 260);
 
-    return () => clearInterval(timer);
-  }, [text]);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [text, isMobile]);
 
   return (
     <span className="inline-block">
@@ -47,23 +50,27 @@ const IconButton = ({ Icon }) => (
 
 const WelcomeScreen = ({ onLoadingComplete }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile] = useState(() => window.innerWidth < 768);
 
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      once: false,
+      duration: isMobile ? 700 : 1000,
+      once: true,
       mirror: false,
     });
+
+    const displayDuration = isMobile ? 1800 : 3400;
+    const exitDelay = isMobile ? 500 : 1000;
 
     const timer = setTimeout(() => {
       setIsLoading(false);
       setTimeout(() => {
         onLoadingComplete?.();
-      }, 1000);
-    }, 3400);
+      }, exitDelay);
+    }, displayDuration);
 
     return () => clearTimeout(timer);
-  }, [onLoadingComplete]);
+  }, [onLoadingComplete, isMobile]);
 
   const containerVariants = {
     exit: {
