@@ -96,9 +96,9 @@ const GitHubStats = () => {
         );
 
     return (
-        <div className="space-y-12" data-aos="fade-up">
+        <div className="space-y-12" data-aos="fade-up" data-aos-duration="900">
             {/* GitHub Header */}
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-8" data-aos="fade-right" data-aos-duration="900">
                 <img
                     src={stats.user.avatar_url}
                     alt={stats.user.login}
@@ -114,7 +114,7 @@ const GitHubStats = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {/* Repositories */}
-                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-blue-500/50 transition">
+                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-blue-500/50 transition" data-aos="fade-up" data-aos-delay="100">
                     <div className="flex items-center gap-3 mb-2">
                         <GitBranch className="w-5 h-5 text-blue-400" />
                         <span className="text-sm text-gray-400">Repositories</span>
@@ -123,7 +123,7 @@ const GitHubStats = () => {
                 </div>
 
                 {/* Stars */}
-                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-yellow-500/50 transition">
+                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-yellow-500/50 transition" data-aos="fade-up" data-aos-delay="200">
                     <div className="flex items-center gap-3 mb-2">
                         <Star className="w-5 h-5 text-yellow-400" />
                         <span className="text-sm text-gray-400">Total Stars</span>
@@ -132,7 +132,7 @@ const GitHubStats = () => {
                 </div>
 
                 {/* Followers */}
-                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-green-500/50 transition">
+                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-green-500/50 transition" data-aos="fade-up" data-aos-delay="300">
                     <div className="flex items-center gap-3 mb-2">
                         <Users className="w-5 h-5 text-green-400" />
                         <span className="text-sm text-gray-400">Followers</span>
@@ -141,7 +141,7 @@ const GitHubStats = () => {
                 </div>
 
                 {/* Following */}
-                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-pink-500/50 transition">
+                <div className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-pink-500/50 transition" data-aos="fade-up" data-aos-delay="400">
                     <div className="flex items-center gap-3 mb-2">
                         <Github className="w-5 h-5 text-pink-400" />
                         <span className="text-sm text-gray-400">Following</span>
@@ -151,14 +151,14 @@ const GitHubStats = () => {
             </div>
 
             {/* Contribution Statistics - FEATURE 2 */}
-            <div className="space-y-4">
+            <div className="space-y-4" data-aos="fade-up" data-aos-delay="150">
                 <h3 className="text-2xl font-bold text-white flex items-center gap-2">
                     <Zap className="w-6 h-6 text-yellow-400" />
                     Contribution Stats
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Active Repositories */}
-                    <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition">
+                    <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition" data-aos="zoom-in-up" data-aos-delay="100">
                         <div className="flex items-start justify-between">
                             <div>
                                 <p className="text-sm text-gray-400 mb-1">Active Projects</p>
@@ -170,7 +170,7 @@ const GitHubStats = () => {
                     </div>
 
                     {/* Total Forks */}
-                    <div className="p-6 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20 hover:border-blue-500/40 transition">
+                    <div className="p-6 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20 hover:border-blue-500/40 transition" data-aos="zoom-in-up" data-aos-delay="200">
                         <div className="flex items-start justify-between">
                             <div>
                                 <p className="text-sm text-gray-400 mb-1">Total Forks</p>
@@ -182,7 +182,7 @@ const GitHubStats = () => {
                     </div>
 
                     {/* Last Updated */}
-                    <div className="p-6 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl border border-green-500/20 hover:border-green-500/40 transition">
+                    <div className="p-6 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl border border-green-500/20 hover:border-green-500/40 transition" data-aos="zoom-in-up" data-aos-delay="300">
                         <div className="flex items-start justify-between">
                             <div>
                                 <p className="text-sm text-gray-400 mb-1">Last Update</p>
@@ -201,7 +201,7 @@ const GitHubStats = () => {
             </div>
 
             {/* Top Repositories - FEATURE 7 */}
-            <div className="space-y-4">
+            <div className="space-y-4" data-aos="fade-up" data-aos-delay="200">
                 <h3 className="text-2xl font-bold text-white flex items-center gap-2">
                     <Star className="w-6 h-6 text-yellow-400" />
                     Top Repositories
@@ -215,6 +215,8 @@ const GitHubStats = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="group relative overflow-hidden rounded-xl border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+                                data-aos="fade-up"
+                                data-aos-delay={100 + (stats.topRepos.indexOf(repo) * 100)}
                             >
                                 {/* Gradient background */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-colors" />
@@ -276,13 +278,15 @@ const GitHubStats = () => {
             </div>
 
             {/* Top Languages */}
-            <div>
+            <div data-aos="fade-up" data-aos-delay="150">
                 <h4 className="text-lg font-bold text-white mb-4">Top Languages</h4>
                 <div className="flex flex-wrap gap-2">
                     {stats.languages.map(({ lang, count }) => (
                         <div
                             key={lang}
                             className="px-3 py-1 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-full text-sm text-white hover:from-purple-500/30 hover:to-pink-500/30 transition"
+                            data-aos="zoom-in"
+                            data-aos-delay="100"
                         >
                             {lang} <span className="text-gray-400">({count})</span>
                         </div>
@@ -296,6 +300,8 @@ const GitHubStats = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-semibold transition"
+                data-aos="fade-up"
+                data-aos-delay="200"
             >
                 <Github className="w-5 h-5" />
                 View Full GitHub Profile

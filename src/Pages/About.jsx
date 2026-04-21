@@ -299,7 +299,7 @@ const AboutPage = () => {
       `}</style>
       {/* GitHub Stats Section */}
       <div className="mt-20 py-20 px-[5%]" id="github-stats">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16" data-aos="fade-up" data-aos-duration="900">
           <h2
             className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
             data-aos="fade-up"
@@ -314,7 +314,7 @@ const AboutPage = () => {
             Check out my GitHub profile for my latest projects and contributions
           </p>
         </div>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto" data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000">
           <GitHubStats />
         </div>
       </div>
