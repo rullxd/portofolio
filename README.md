@@ -2,7 +2,7 @@
 
 Hello everyone\! 👋
 
-Let me introduce myself, I'm **Eki Zulfar Rachman**. On this occasion, I'd like to share the portfolio website project that I've developed. built with React and Supabase, featuring a public-facing site and an admin dashboard.
+Let me introduce myself, I'm **Syachrul Ramadani**. On this occasion, I'd like to share the portfolio website project that I've developed. built with React and Supabase, featuring a public-facing site and an admin dashboard.
 
 **Live Demo:** [https://ekizr.com](https://ekizr.com)
 
@@ -42,7 +42,7 @@ This project is built using modern web technologies:
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/EkiZR/Portofolio_V5.git
+git clone https://github.com/syachrul/Portofolio_V5.git
 cd Portofolio_V5
 npm install
 ```
@@ -220,7 +220,7 @@ Go to **Table Editor → portfolio_comments → Enable Realtime**.
 
 ```sql
 INSERT INTO public.profiles (id, username, role)
-VALUES ('USER_UUID', 'eki', 'admin');
+VALUES ('USER_UUID', 'syachrul', 'admin');
 ```
 
 ### 7. Run Locally
@@ -271,8 +271,8 @@ Upload the contents of the `dist/` folder to your hosting provider.
 
 ## Credits & Contact
 
-**Eki Zulfar Rachman**  
-Website: [eki.my.id](https://ekizr.com) · GitHub: [EkiZR](https://github.com/EkiZR)
+**Syachrul Ramadani**  
+Website: [syachrul.my.id](https://syachrul.com) · GitHub: [syachrul](https://github.com/syachrul)
 
 Thanks to [LottieFiles](https://lottiefiles.com/free-animation/coding-NWhbxMOVgP) and Claude.
 

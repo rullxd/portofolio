@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { supabase } from "../supabase"; 
+import { supabase } from "../supabase";
 
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
@@ -125,8 +125,17 @@ export default function FullWidthTabs() {
   const [certificates, setCertificates] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [showAllCertificates, setShowAllCertificates] = useState(false);
-  const isMobile = window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const initialItems = isMobile ? 4 : 6;
+
+  // Handle window resize to make isMobile reactive
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     AOS.init({
@@ -140,7 +149,7 @@ export default function FullWidthTabs() {
       // Mengambil data dari Supabase secara paralel
       const [projectsResponse, certificatesResponse] = await Promise.all([
         supabase.from("projects").select("*").order('id', { ascending: false }),
-        supabase.from("certificates").select("*").order('id', { ascending: false }), 
+        supabase.from("certificates").select("img, id, created_at").order('id', { ascending: false }),
       ]);
 
       // Error handling untuk setiap request
@@ -170,10 +179,10 @@ export default function FullWidthTabs() {
     const cachedCertificates = localStorage.getItem('certificates');
 
     if (cachedProjects && cachedCertificates) {
-        setProjects(JSON.parse(cachedProjects));
-        setCertificates(JSON.parse(cachedCertificates));
+      setProjects(JSON.parse(cachedProjects));
+      setCertificates(JSON.parse(cachedCertificates));
     }
-    
+
     fetchData(); // Tetap panggil fetchData untuk sinkronisasi data terbaru
   }, [fetchData]);
 
@@ -209,7 +218,7 @@ export default function FullWidthTabs() {
           </span>
         </h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2">
-          Explore my journey through projects, certifications, and technical expertise. 
+          Explore my journey through projects, certifications, and technical expertise.
           Each section represents a milestone in my continuous learning path.
         </p>
       </div>
@@ -316,10 +325,11 @@ export default function FullWidthTabs() {
                     data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                   >
                     <CardProject
-                      Img={project.Img}
-                      Title={project.Title}
-                      Description={project.Description}
-                      Link={project.Link}
+                      Img={project.img}
+                      Title={project.title}
+                      Description={project.description}
+                      Link={project.link}
+                      TechStack={project.tech_stack}
                       id={project.id}
                     />
                   </div>
@@ -345,7 +355,7 @@ export default function FullWidthTabs() {
                     data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
                     data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                   >
-                    <Certificate ImgSertif={certificate.Img} />
+                    <Certificate ImgSertif={certificate.img} />
                   </div>
                 ))}
               </div>
