@@ -7,12 +7,11 @@ import { supabase } from '../supabase';
 
 
 const Comment = memo(({ comment, formatDate, index, isPinned = false }) => (
-    <div 
-        className={`px-4 pt-4 pb-2 rounded-xl border transition-all group hover:shadow-lg hover:-translate-y-0.5 ${
-            isPinned 
-                ? 'bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border-indigo-500/30 hover:bg-gradient-to-r hover:from-indigo-500/15 hover:to-purple-500/15' 
+    <div
+        className={`px-4 pt-4 pb-2 rounded-xl border transition-all group hover:shadow-lg hover:-translate-y-0.5 ${isPinned
+                ? 'bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border-indigo-500/30 hover:bg-gradient-to-r hover:from-indigo-500/15 hover:to-purple-500/15'
                 : 'bg-white/5 border-white/10 hover:bg-white/10'
-        }`}
+            }`}
     >
         {isPinned && (
             <div className="flex items-center gap-2 mb-3 text-indigo-400">
@@ -25,24 +24,22 @@ const Comment = memo(({ comment, formatDate, index, isPinned = false }) => (
                 <img
                     src={comment.profile_image}
                     alt={`${comment.user_name}'s profile`}
-                    className={`w-10 h-10 rounded-full object-cover border-2 flex-shrink-0  ${
-                        isPinned ? 'border-indigo-500/50' : 'border-indigo-500/30'
-                    }`}
+                    className={`w-10 h-10 rounded-full object-cover border-2 flex-shrink-0  ${isPinned ? 'border-indigo-500/50' : 'border-indigo-500/30'
+                        }`}
                     loading="lazy"
+                    decoding="async"
                 />
             ) : (
-                <div className={`p-2 rounded-full text-indigo-400 group-hover:bg-indigo-500/30 transition-colors ${
-                    isPinned ? 'bg-indigo-500/30' : 'bg-indigo-500/20'
-                }`}>
+                <div className={`p-2 rounded-full text-indigo-400 group-hover:bg-indigo-500/30 transition-colors ${isPinned ? 'bg-indigo-500/30' : 'bg-indigo-500/20'
+                    }`}>
                     <UserCircle2 className="w-5 h-5" />
                 </div>
             )}
             <div className="flex-grow min-w-0">
                 <div className="flex items-center justify-between gap-4 mb-2">
                     <div className="flex items-center gap-2">
-                        <h4 className={`font-medium truncate ${
-                            isPinned ? 'text-indigo-200' : 'text-white'
-                        }`}>
+                        <h4 className={`font-medium truncate ${isPinned ? 'text-indigo-200' : 'text-white'
+                            }`}>
                             {comment.user_name}
                         </h4>
                         {isPinned && (
@@ -81,14 +78,14 @@ const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
                 if (e.target) e.target.value = '';
                 return;
             }
-            
+
             // Check file type
             if (!file.type.startsWith('image/')) {
                 alert('Please select a valid image file.');
                 if (e.target) e.target.value = '';
                 return;
             }
-            
+
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => setImagePreview(reader.result);
@@ -107,7 +104,7 @@ const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
         if (!newComment.trim() || !userName.trim()) return;
-        
+
         onSubmit({ newComment, userName, imageFile });
         setNewComment('');
         setUserName('');
@@ -127,7 +124,7 @@ const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
                     type="text"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                     maxLength={15}
+                    maxLength={15}
                     placeholder="Enter your name"
                     className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                     required
@@ -141,7 +138,7 @@ const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
                 <textarea
                     ref={textareaRef}
                     value={newComment}
-                     maxLength={200}
+                    maxLength={200}
 
                     onChange={handleTextareaChange}
                     placeholder="Write your message here..."
@@ -161,6 +158,7 @@ const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
                                 src={imagePreview}
                                 alt="Profile preview"
                                 className="w-16 h-16 rounded-full object-cover border-2 border-indigo-500/50"
+                                decoding="async"
                             />
                             <button
                                 type="button"
@@ -248,12 +246,12 @@ const Komentar = () => {
                     .select('*')
                     .eq('is_pinned', true)
                     .single();
-                
+
                 if (error && error.code !== 'PGRST116') {
                     console.error('Error fetching pinned comment:', error);
                     return;
                 }
-                
+
                 if (data) {
                     setPinnedComment(data);
                 }
@@ -273,12 +271,12 @@ const Komentar = () => {
                 .select('*')
                 .eq('is_pinned', false)
                 .order('created_at', { ascending: false });
-            
+
             if (error) {
                 console.error('Error fetching comments:', error);
                 return;
             }
-            
+
             setComments(data || []);
         };
 
@@ -287,13 +285,13 @@ const Komentar = () => {
         // Set up real-time subscription
         const subscription = supabase
             .channel('portfolio_comments')
-            .on('postgres_changes', 
-                { 
-                    event: '*', 
-                    schema: 'public', 
+            .on('postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
                     table: 'portfolio_comments',
                     filter: 'is_pinned=eq.false'
-                }, 
+                },
                 () => {
                     fetchComments(); // Refresh comments when changes occur
                 }
@@ -307,7 +305,7 @@ const Komentar = () => {
 
     const uploadImage = useCallback(async (imageFile) => {
         if (!imageFile) return null;
-        
+
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
         const filePath = `profile-images/${fileName}`;
@@ -330,10 +328,10 @@ const Komentar = () => {
     const handleCommentSubmit = useCallback(async ({ newComment, userName, imageFile }) => {
         setError('');
         setIsSubmitting(true);
-        
+
         try {
             const profileImageUrl = await uploadImage(imageFile);
-            
+
             const { error } = await supabase
                 .from('portfolio_comments')
                 .insert([
@@ -399,7 +397,7 @@ const Komentar = () => {
                         <p className="text-sm">{error}</p>
                     </div>
                 )}
-                
+
                 <div>
                     <CommentForm onSubmit={handleCommentSubmit} isSubmitting={isSubmitting} error={error} />
                 </div>
@@ -408,15 +406,15 @@ const Komentar = () => {
                     {/* Pinned Comment */}
                     {pinnedComment && (
                         <div data-aos="fade-down" data-aos-duration="800">
-                            <Comment 
-                                comment={pinnedComment} 
+                            <Comment
+                                comment={pinnedComment}
                                 formatDate={formatDate}
                                 index={0}
                                 isPinned={true}
                             />
                         </div>
                     )}
-                    
+
                     {/* Regular Comments */}
                     {comments.length === 0 && !pinnedComment ? (
                         <div className="text-center py-8" data-aos="fade-in">
@@ -425,9 +423,9 @@ const Komentar = () => {
                         </div>
                     ) : (
                         comments.map((comment, index) => (
-                            <Comment 
-                                key={comment.id} 
-                                comment={comment} 
+                            <Comment
+                                key={comment.id}
+                                comment={comment}
                                 formatDate={formatDate}
                                 index={index + (pinnedComment ? 1 : 0)}
                                 isPinned={false}

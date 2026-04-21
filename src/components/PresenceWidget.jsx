@@ -143,6 +143,8 @@ export default function PresenceWidget() {
                           src={act.image}
                           alt={act.title}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : act.iconImage ? (
                         <div className="w-full h-full flex items-center justify-center p-2">
@@ -150,6 +152,8 @@ export default function PresenceWidget() {
                             src={act.iconImage}
                             alt={act.title}
                             className="w-full h-full object-contain"
+                            loading="lazy"
+                            decoding="async"
                           />
                         </div>
                       ) : (
@@ -193,7 +197,7 @@ export default function PresenceWidget() {
                   {/* Spotify Icon - pojok kanan */}
                   {act.type === "spotify" && (
                     <div className="">
-                      <img src="Spotify.png" className="w-auto h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-300" alt="" />
+                      <img src="Spotify.png" className="w-auto h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-300" alt="" loading="lazy" decoding="async" />
                     </div>
                   )}
 

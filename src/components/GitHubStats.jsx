@@ -103,6 +103,8 @@ const GitHubStats = () => {
                     src={stats.user.avatar_url}
                     alt={stats.user.login}
                     className="w-20 h-20 rounded-full border-2 border-purple-500/50"
+                    loading="lazy"
+                    decoding="async"
                 />
                 <div>
                     <h3 className="text-2xl font-bold text-white">{stats.user.name}</h3>

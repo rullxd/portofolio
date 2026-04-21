@@ -55,6 +55,7 @@ const ProfileImage = memo(() => (
             alt="Profile"
             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-2"
             loading="lazy"
+            decoding="async"
           />
 
           {/* Advanced hover effects - desktop only */}
