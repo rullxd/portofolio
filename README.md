@@ -4,7 +4,7 @@ Hello everyone\! 👋
 
 Let me introduce myself, I'm **Syachrul Ramadani**. On this occasion, I'd like to share the portfolio website project that I've developed. built with React and Supabase, featuring a public-facing site and an admin dashboard.
 
-**Live Demo:** [https://ekizr.com](https://ekizr.com)
+**Live Demo:** [https://rullxd.com](https://rullxd.com)
 
 ---
 
