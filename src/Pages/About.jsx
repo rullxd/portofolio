@@ -1,8 +1,8 @@
-import React, { useEffect, memo, useMemo } from "react"
+import React, { useEffect, memo, useMemo, lazy, Suspense, useRef, useState } from "react"
 import { FileText, Code, Award, Globe, ArrowUpRight, Sparkles, UserCheck } from "lucide-react"
 import AOS from 'aos'
 import 'aos/dist/aos.css'
-import GitHubStats from '../components/GitHubStats'
+const GitHubStats = lazy(() => import('../components/GitHubStats'))
 
 // Memoized Components
 const Header = memo(() => (
@@ -114,6 +114,9 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
 ));
 
 const AboutPage = () => {
+  const githubStatsRef = useRef(null)
+  const [showGitHubStats, setShowGitHubStats] = useState(false)
+
   // Memoized calculations
   const { totalProjects, totalCertificates, YearExperience } = useMemo(() => {
     const storedProjects = JSON.parse(localStorage.getItem("projects") || "[]");
@@ -130,6 +133,28 @@ const AboutPage = () => {
       YearExperience: experience
     };
   }, []);
+
+  useEffect(() => {
+    const element = githubStatsRef.current;
+    if (!element || showGitHubStats) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowGitHubStats(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '200px 0px',
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [showGitHubStats]);
 
   // Optimized AOS initialization
   useEffect(() => {
@@ -298,7 +323,7 @@ const AboutPage = () => {
         }
       `}</style>
       {/* GitHub Stats Section */}
-      <div className="mt-20 py-20 px-[5%]" id="github-stats">
+      <div className="mt-20 py-20 px-[5%]" id="github-stats" ref={githubStatsRef}>
         <div className="text-center mb-16" data-aos="fade-up" data-aos-duration="900">
           <h2
             className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
@@ -315,7 +340,13 @@ const AboutPage = () => {
           </p>
         </div>
         <div className="max-w-6xl mx-auto" data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000">
-          <GitHubStats />
+          {showGitHubStats ? (
+            <Suspense fallback={<div className="py-10 text-center text-gray-400">Loading GitHub section...</div>}>
+              <GitHubStats />
+            </Suspense>
+          ) : (
+            <div className="py-10 text-center text-gray-400">GitHub stats will load when you reach this section.</div>
+          )}
         </div>
       </div>
     </div>

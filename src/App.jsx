@@ -4,7 +4,6 @@ import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
 import Navbar from "./components/Navbar";
 import Home from "./Pages/Home";
-import About from "./Pages/About";
 import AnimatedBackground from "./components/Background";
 import { AnimatePresence } from "framer-motion";
 import Footer from "./components/Footer";
@@ -14,6 +13,7 @@ import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const Portofolio = lazy(() => import("./Pages/Portofolio"));
+const About = lazy(() => import("./Pages/About"));
 const ContactPage = lazy(() => import("./Pages/Contact"));
 const ProjectDetails = lazy(() => import("./components/ProjectDetail"));
 const WelcomeScreen = lazy(() => import("./Pages/WelcomeScreen"));
@@ -33,9 +33,11 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
       {!showWelcome && (
         <>
           <Navbar />
-      
+
           <Home />
-          <About />
+          <Suspense fallback={<div className="min-h-[900px]" />}>
+            <About />
+          </Suspense>
           <Suspense fallback={<div className="h-20" />}>
             <Portofolio />
             <ContactPage />
@@ -60,11 +62,11 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(true);
 
   return (
-    
+
     <HelmetProvider>
       <div className="pointer-events-none">
-  <AnimatedBackground />
-</div>
+        <AnimatedBackground />
+      </div>
       <BrowserRouter>
         <Routes>
           {/* PUBLIC */}
