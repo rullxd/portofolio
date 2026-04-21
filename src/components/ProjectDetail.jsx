@@ -167,7 +167,7 @@ const ProjectDetails = () => {
           content={
             project.description
               ? project.description.slice(0, 155)
-              : `Project ${project.title} oleh Syachrul — Frontend Web Developer.`
+              : `Project ${project.title} oleh Syachrul — Fullstack Web Developer.`
           }
         />
         <meta name="robots" content="index, follow" />
