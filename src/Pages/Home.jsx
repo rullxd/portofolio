@@ -159,10 +159,10 @@ const Home = () => {
         <title>Syachrul — Fullstack Web Developer</title>
         <meta name="description" content="Website resmi Syachrul, Fullstack Web Developer. Saya berfokus pada penciptaan pengalaman digital yang menarik dan selalu berupaya memberikan solusi terbaik dalam setiap proyek yang saya kerjakan." />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://rullxd.com" />
+        <link rel="canonical" href="https://rullxd.dev" />
         <meta property="og:title" content="Syachrul — Fullstack Web Developer" />
         <meta property="og:description" content="Website resmi dan portofolio Syachrul, Fullstack Web Developer." />
-        <meta property="og:url" content="https://rullxd.com" />
+        <meta property="og:url" content="https://rullxd.dev" />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{`
           {
@@ -170,7 +170,7 @@ const Home = () => {
             "@type": "Person",
             "name": "Syachrul",
             "jobTitle": "Fullstack Developer",
-            "url": "https://rullxd.com",
+            "url": "https://rullxd.dev",
             "sameAs": [
               "https://github.com/syachrul",
               "https://www.linkedin.com/in/syachrul-ramadani-994b462b6/",
