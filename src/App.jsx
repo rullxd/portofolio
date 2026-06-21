@@ -19,6 +19,7 @@ const ContactPage = lazy(() => import("./Pages/Contact"));
 const ProjectDetails = lazy(() => import("./components/ProjectDetail"));
 const WelcomeScreen = lazy(() => import("./Pages/WelcomeScreen"));
 const NotFoundPage = lazy(() => import("./Pages/404"));
+const ThankYou = lazy(() => import("./Pages/ThankYou"));
 
 const LandingPage = ({ showWelcome, setShowWelcome }) => {
   return (
@@ -82,6 +83,16 @@ function App() {
           />
 
           <Route path="/project/:slug" element={<ProjectPageLayout />} />
+
+          {/* THANK YOU */}
+          <Route
+            path="/thank-you"
+            element={
+              <Suspense fallback={null}>
+                <ThankYou />
+              </Suspense>
+            }
+          />
 
           {/* AUTH */}
           <Route path="/login" element={<Login />} />

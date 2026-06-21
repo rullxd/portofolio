@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Share2, User, Mail, MessageSquare, Send } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SocialLinks from "../components/SocialLinks";
 import Komentar from "../components/Commentar";
 import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import axios from "axios";
 
 const ContactPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [charCount, setCharCount] = useState(0);
+  const MAX_MESSAGE_LENGTH = 500;
 
   useEffect(() => {
     AOS.init({
@@ -24,14 +26,57 @@ const ContactPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === "message") {
+      if (value.length <= MAX_MESSAGE_LENGTH) {
+        setCharCount(value.length);
+        setFormData((prev) => ({ ...prev, [name]: value }));
+      }
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validasi email
+    if (!validateEmail(formData.email)) {
+      Swal.fire({
+        title: 'Email Tidak Valid!',
+        text: 'Silakan masukkan alamat email yang valid.',
+        icon: 'warning',
+        confirmButtonColor: '#6366f1'
+      });
+      return;
+    }
+
+    // Validasi nama minimal 2 karakter
+    if (formData.name.trim().length < 2) {
+      Swal.fire({
+        title: 'Nama Terlalu Pendek!',
+        text: 'Nama harus minimal 2 karakter.',
+        icon: 'warning',
+        confirmButtonColor: '#6366f1'
+      });
+      return;
+    }
+
+    // Validasi pesan minimal 10 karakter
+    if (formData.message.trim().length < 10) {
+      Swal.fire({
+        title: 'Pesan Terlalu Pendek!',
+        text: 'Pesan harus minimal 10 karakter.',
+        icon: 'warning',
+        confirmButtonColor: '#6366f1'
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     Swal.fire({
@@ -44,49 +89,38 @@ const ContactPage = () => {
     });
 
     try {
-      // Ganti dengan email Anda di FormSubmit
-      const formSubmitUrl = 'https://formsubmit.co/sahtulbb@gmail.com';
+      // Gunakan FormSubmit.co AJAX endpoint
+      const formSubmitUrl = 'https://formsubmit.co/ajax/sahtulbb@gmail.com';
 
-      // Siapkan data form untuk FormSubmit
-      const submitData = new FormData();
-      submitData.append('name', formData.name);
-      submitData.append('email', formData.email);
-      submitData.append('message', formData.message);
-      submitData.append('_subject', 'Pesan Baru dari Website Portfolio');
-      submitData.append('_captcha', 'false'); // Nonaktifkan captcha
-      submitData.append('_template', 'table'); // Format email sebagai tabel
-
-      await axios.post(formSubmitUrl, submitData, {
+      const response = await fetch(formSubmitUrl, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: 'Pesan Baru dari Website Portfolio',
+          _captcha: 'false',
+          _template: 'table',
+        }),
       });
 
+      const result = await response.json();
 
-      Swal.fire({
-        title: 'Berhasil!',
-        text: 'Pesan Anda telah berhasil terkirim!',
-        icon: 'success',
-        confirmButtonColor: '#6366f1',
-        timer: 2000,
-        timerProgressBar: true
-      });
-
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
-
-    } catch (error) {
-      if (error.request && error.request.status === 0) {
+      if (response.ok && result.success) {
         Swal.fire({
           title: 'Berhasil!',
           text: 'Pesan Anda telah berhasil terkirim!',
           icon: 'success',
           confirmButtonColor: '#6366f1',
           timer: 2000,
-          timerProgressBar: true
+          timerProgressBar: true,
+          willClose: () => {
+            navigate('/thank-you');
+          }
         });
 
         setFormData({
@@ -94,14 +128,19 @@ const ContactPage = () => {
           email: "",
           message: "",
         });
+        setCharCount(0);
       } else {
-        Swal.fire({
-          title: 'Gagal!',
-          text: 'Terjadi kesalahan. Silakan coba lagi nanti.',
-          icon: 'error',
-          confirmButtonColor: '#6366f1'
-        });
+        throw new Error(result.message || 'Gagal mengirim pesan');
       }
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      Swal.fire({
+        title: 'Gagal!',
+        text: 'Terjadi kesalahan saat mengirim pesan. Silakan coba lagi nanti.',
+        icon: 'error',
+        confirmButtonColor: '#6366f1'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -208,9 +247,13 @@ const ContactPage = () => {
                   value={formData.message}
                   onChange={handleChange}
                   disabled={isSubmitting}
+                  maxLength={500}
                   className="w-full resize-none p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 h-[9.9rem] disabled:opacity-50"
                   required
                 />
+                <span className="absolute bottom-2 right-3 text-xs text-gray-500">
+                  {charCount}/500
+                </span>
               </div>
               <button
                 data-aos="fade-up"
