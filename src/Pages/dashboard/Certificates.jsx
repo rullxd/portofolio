@@ -22,30 +22,61 @@ const SkeletonCard = () => (
 
 const CertCard = ({ cert, onDelete }) => {
   const [imgLoaded, setImgLoaded] = useState(false)
+  const isPdf = cert.img?.toLowerCase().endsWith('.pdf')
 
   return (
     <div className="relative group">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10 group-hover:opacity-30 transition duration-500" />
       <div className="relative bg-white/5 border border-white/12 rounded-2xl overflow-hidden">
-        {/* Skeleton shown until image loads */}
-        {!imgLoaded && (
-          <div className="w-full aspect-[16/11.5] bg-white/5 animate-pulse" />
-        )}
-        <img
-          src={cert.img}
-          alt="Certificate"
-          onLoad={() => setImgLoaded(true)}
-          className={`w-full aspect-[16/11.5] object-cover group-hover:scale-105 transition-transform duration-500 ${imgLoaded ? 'block' : 'hidden'}`}
-        />
-        {imgLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-            <button
-              onClick={() => onDelete(cert.id)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/20 border border-red-500/30 text-red-300 text-xs w-full justify-center hover:bg-red-500/30 transition-colors"
-            >
-              <Trash2 className="w-3 h-3" /> Delete
-            </button>
-          </div>
+        {isPdf ? (
+          <>
+            <iframe
+              src={cert.img}
+              className="w-full aspect-[16/11.5]"
+              title="Certificate PDF"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+              <div className="flex gap-2 w-full">
+                <a
+                  href={cert.img}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs justify-center hover:bg-indigo-500/30 transition-colors flex-1"
+                >
+                  <ImageIcon className="w-3 h-3" /> View
+                </a>
+                <button
+                  onClick={() => onDelete(cert.id)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/20 border border-red-500/30 text-red-300 text-xs justify-center hover:bg-red-500/30 transition-colors flex-1"
+                >
+                  <Trash2 className="w-3 h-3" /> Delete
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Skeleton shown until image loads */}
+            {!imgLoaded && (
+              <div className="w-full aspect-[16/11.5] bg-white/5 animate-pulse" />
+            )}
+            <img
+              src={cert.img}
+              alt="Certificate"
+              onLoad={() => setImgLoaded(true)}
+              className={`w-full aspect-[16/11.5] object-cover group-hover:scale-105 transition-transform duration-500 ${imgLoaded ? 'block' : 'hidden'}`}
+            />
+            {imgLoaded && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                <button
+                  onClick={() => onDelete(cert.id)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/20 border border-red-500/30 text-red-300 text-xs w-full justify-center hover:bg-red-500/30 transition-colors"
+                >
+                  <Trash2 className="w-3 h-3" /> Delete
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -72,7 +103,12 @@ export default function Certificates() {
   const handleFile = (f) => {
     if (!f) return
     setFile(f)
-    setPreview(URL.createObjectURL(f))
+    const isPdf = f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')
+    if (isPdf) {
+      setPreview(null) // PDF can't be previewed as image
+    } else {
+      setPreview(URL.createObjectURL(f))
+    }
   }
 
   const uploadImage = async () => {
@@ -126,16 +162,24 @@ export default function Certificates() {
           >
             {preview ? (
               <img src={preview} alt="preview" className="max-h-40 object-contain rounded-lg p-2" />
+            ) : file ? (
+              <div className="text-center space-y-2 p-6">
+                <div className="w-11 h-11 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto">
+                  <span className="text-red-400 text-xs font-bold">PDF</span>
+                </div>
+                <p className="text-sm text-gray-300 truncate max-w-[200px] mx-auto">{file.name}</p>
+                <p className="text-xs text-gray-600">Ready to upload</p>
+              </div>
             ) : (
               <div className="text-center space-y-2 p-6">
                 <div className="w-11 h-11 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mx-auto">
                   <ImageIcon className="w-5 h-5 text-indigo-400" />
                 </div>
                 <p className="text-sm text-gray-300">Drag & drop or click to upload</p>
-                <p className="text-xs text-gray-600">PNG, JPG, WEBP supported</p>
+                <p className="text-xs text-gray-600">PNG, JPG, WEBP, PDF supported</p>
               </div>
             )}
-            <input type="file" accept="image/*" onChange={e => handleFile(e.target.files[0])} className="hidden" />
+            <input type="file" accept="image/*,.pdf" onChange={e => handleFile(e.target.files[0])} className="hidden" />
           </label>
 
           {file && (
